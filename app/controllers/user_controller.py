@@ -28,9 +28,9 @@ class UserController:
             return True
         return False
 
-    # def user_login(self, user_name, password):
-    #     # user login
-    #     login = self.dbcon.user_login(user_name=user_name, password=password)
-    #     if login:
-    #         return login
-    #     return False    
+    def user_login(self, user_name, password):
+        # user login
+        login = self.dbcon.user_login(user_name=user_name, password=password)
+        if login:
+            return login
+        return False    

@@ -64,3 +64,16 @@ class Login(MethodView):
 
 login_view = Login.as_view("login_view")
 auth_blueprint.add_url_rule("/api/auth/login",view_func=login_view, methods=["POST"])
+
+def admin_permission_required(yx):
+    #  A decorator function to wrap and replace the normal jwt_required function
+    @wraps(yx)
+    def decorated_function(*args, **kwargs):
+        # check role of user in token.
+        logged_user = get_jwt_identity()
+        user_role = user_controller.get_user_role(user_name=logged_user)
+        if user_role["role"] != 'admin':
+            return jsonify({"message": "You need Admin previllages to access this route"}), 403
+        else:
+            return yx(*args, **kwargs)
+    return decorated_function

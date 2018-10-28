@@ -33,4 +33,9 @@ class UserController:
         login = self.dbcon.user_login(user_name=user_name, password=password)
         if login:
             return login
-        return False    
+        return False
+
+    def get_user_role(self, user_name):
+        # get current user's role
+        user = self.dbcon.is_username_exist(user_name=user_name)
+        return user    

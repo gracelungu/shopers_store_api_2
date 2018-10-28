@@ -38,3 +38,29 @@ class RegisterAttendant(MethodView):
 
 registration_view = RegisterAttendant.as_view("registration_view")
 auth_blueprint.add_url_rule("/api/auth/register",view_func=registration_view, methods=["POST"])
+
+class Login(MethodView):
+    def post(self):
+        data = request.get_json()
+        search_keys = ("user_name", "password")
+        if all(key in data.keys() for key in search_keys):
+            user_name = data.get("user_name")
+            password = data.get("password")
+
+            invalid = validate.login_validation(user_name, password)
+            if invalid:
+                return jsonify({"message": invalid}), 400
+
+            user_token = {}
+            expires = datetime.timedelta(days=1)
+            grant_access = user_controller.user_login(user_name=user_name, password=password)
+            if grant_access:
+                access_token = create_access_token(identity= grant_access["username"], expires_delta=expires)
+                user_token["logged in user"]=user_name
+                user_token["token"] = access_token
+                return jsonify(user_token), 200
+            return jsonify({"message": "user does not exist"}), 404
+        return jsonify({"message": "a 'key(s)' is missing in login body"}), 400
+
+login_view = Login.as_view("login_view")
+auth_blueprint.add_url_rule("/api/auth/login",view_func=login_view, methods=["POST"])

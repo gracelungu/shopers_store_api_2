@@ -5,3 +5,4 @@ app/auth/*.pyc
 app/controllers/*.pyc
 app/db/*.pyc
 app/models/*.pyc
+.env

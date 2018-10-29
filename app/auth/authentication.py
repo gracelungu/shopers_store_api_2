@@ -11,6 +11,7 @@ user_controller = UserController()
 auth_blueprint = Blueprint("auth_blueprint", __name__)
 
 class RegisterAttendant(MethodView):
+    @admin_permission_required
     def post(self):
         data = request.get_json()
         search_keys = ("user_name","contact","role","password")

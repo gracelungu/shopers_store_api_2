@@ -70,6 +70,7 @@ def admin_permission_required(yx):
     @wraps(yx)
     def decorated_function(*args, **kwargs):
         # check role of user in token.
+        verify_jwt_in_request()
         logged_user = get_jwt_identity()
         user_role = user_controller.get_user_role(user_name=logged_user)
         if user_role["role"] != 'admin':

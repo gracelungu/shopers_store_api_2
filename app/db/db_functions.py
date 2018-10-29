@@ -17,7 +17,7 @@ class DBFunctions:
         self.cursor.execute(query)
         user =self.cursor.fetchone()
         if user:
-            return True
+            return user
         return False    
 
     def is_contact_exist(self,contact):
@@ -35,3 +35,39 @@ class DBFunctions:
         self.cursor.execute(query)
         user =self.cursor.fetchone()
         return user
+
+    def add_new_product(self, product, quantity, unit_price):
+        # add new product item
+        query = (
+            """INSERT INTO products (product, quantity, unit_price) VALUES ('{}', '{}', '{}')""".
+            format(product, quantity, unit_price))
+        self.cursor.execute(query)
+
+    def does_product_exist(self,product):
+        # check if product exists.
+        query = ("""SELECT * FROM products where product = '{}'""".format(product))
+        self.cursor.execute(query)
+        product = self.cursor.fetchone()
+        if product:
+            return product
+        return False
+
+    def update_product(self, product, quantity, unit_price, product_id):
+    #function to update product
+        try:
+            query = ("""UPDATE products SET product = '{}', quantity = '{}', unit_price = '{}' where product_id = '{}'""" .format(
+                product, quantity, unit_price, product_id))
+            self.cursor.execute(query)
+            count = self.cursor.rowcount
+            if int(count) > 0:
+                return True
+            else:
+                return False   
+        except:
+            return False
+
+    def fetch_single_product(self,product_id):
+        # function to get details of a product
+        self.cursor.execute("SELECT * FROM products WHERE product_id = '{}'" .format(product_id))
+        row = self.cursor.fetchone()
+        return row      

@@ -1,6 +1,7 @@
 from app import app
 from app.db.db_manager import DBConnection
 from flask import jsonify
+import os
 
 
 @app.errorhandler(405)

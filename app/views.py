@@ -2,7 +2,7 @@ from flask import jsonify, request, Blueprint
 from flask.views import MethodView
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from app.validation import Validation
-from app.auth.authentication import admin_permission_required
+from app.decorator import admin_permission_required
 from app.controllers.product_controller import ProductController
 
 validate = Validation()

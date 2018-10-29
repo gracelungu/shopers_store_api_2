@@ -48,6 +48,7 @@ class AddProduct(MethodView):
         except Exception as exception:
             return jsonify({"message": str(exception)}), 400
 
+
 class DeleteProduct(MethodView):
     def delete(self, product_id):
         invalid = validate.validate_input_type(product_id)
@@ -59,9 +60,41 @@ class DeleteProduct(MethodView):
         else:
             return jsonify({"message": "product not deleted, or doesn't exist"}), 400
 
+
+class UpdateProduct(MethodView):
+    def put(self, product_id):
+        invalid_id = validate.validate_input_type(product_id)
+        if invalid_id:
+            return jsonify({"message": invalid_id}), 400
+        data = request.get_json()
+        search_keys = ("product", "quantity", "unit_price")
+        if all(key in data.keys() for key in search_keys):
+            product = data.get("product")
+            quantity = data.get("quantity")
+            unit_price = data.get("unit_price")
+
+            invalid = validate.product_validation(
+                product, quantity, unit_price)
+            if invalid:
+                return jsonify({"message": invalid}), 400
+            update = product_controller.update_product(
+                product_name=product, quantity=quantity, unit_price=unit_price, product_id=product_id)
+            if update:
+                return jsonify({
+                    "message":
+                        "product successfully updated.", "Updated Product": product_controller.get_single_product(product_id=product_id)
+                }), 200
+            return jsonify({"message": "product not updated or doesn't exist"}), 400
+        return jsonify({"message": "a 'key(s)' is missing in your request body"}), 400
+
+
 add_product_view = AddProduct.as_view("add_product_view")
 delete_product_view = DeleteProduct.as_view("delete_product_view")
+update_product_view = UpdateProduct.as_view("update_product_view")
 
-views_blueprint.add_url_rule("/api/v1/products", view_func=add_product_view, methods=["POST"])
-views_blueprint.add_url_rule("/api/v1/products/<product_id>", view_func=delete_product_view, methods=["DELETE"])
-
+views_blueprint.add_url_rule(
+    "/api/v1/products", view_func=add_product_view, methods=["POST"])
+views_blueprint.add_url_rule(
+    "/api/v1/products/<product_id>", view_func=delete_product_view, methods=["DELETE"])
+views_blueprint.add_url_rule(
+    "/api/v1/products/<product_id>", view_func=update_product_view, methods=["PUT"])

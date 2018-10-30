@@ -29,8 +29,16 @@ class ProductController:
             return True
         else:
             return False
+
     def get_single_product(self, product_id):
         product = self.dbcon.fetch_single_product(product_id=product_id)
         if product:
             return product
-        return False   
+        return False
+
+    def delete_product(self, product_id):
+        # delete a product
+        delete_item = self.dbcon.delete_product(product_id=product_id)
+        if delete_item:
+            return True
+        return False

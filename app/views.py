@@ -48,5 +48,20 @@ class AddProduct(MethodView):
         except Exception as exception:
             return jsonify({"message": str(exception)}), 400
 
+class DeleteProduct(MethodView):
+    def delete(self, product_id):
+        invalid = validate.validate_input_type(product_id)
+        if invalid:
+            return jsonify({"message": invalid}), 400
+        delete = product_controller.delete_product(product_id=product_id)
+        if delete:
+            return jsonify({"message": "product successfully deleted"}), 200
+        else:
+            return jsonify({"message": "product not deleted, or doesn't exist"}), 400
+
 add_product_view = AddProduct.as_view("add_product_view")
+delete_product_view = DeleteProduct.as_view("delete_product_view")
+
 views_blueprint.add_url_rule("/api/v1/products", view_func=add_product_view, methods=["POST"])
+views_blueprint.add_url_rule("/api/v1/products/<product_id>", view_func=delete_product_view, methods=["DELETE"])
+

@@ -70,4 +70,14 @@ class DBFunctions:
         # function to get details of a product
         self.cursor.execute("SELECT * FROM products WHERE product_id = '{}'" .format(product_id))
         row = self.cursor.fetchone()
-        return row      
+        return row
+
+    def delete_product(self, product_id):
+        # function to delete a specific product
+        query = ("""DELETE FROM products WHERE product_id = '{}'""" .format(product_id))
+        self.cursor.execute(query)
+        delete = self.cursor.rowcount
+        if int(delete) > 0:
+            return True
+        else:
+            return False   

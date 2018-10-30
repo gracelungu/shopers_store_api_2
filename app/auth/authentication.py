@@ -1,9 +1,9 @@
 from flask import request, jsonify, Blueprint
 from flask.views import MethodView
-from functools import wraps
 from flask_jwt_extended import create_access_token, get_jwt_identity, verify_jwt_in_request
 from app.validation import Validation
 from app.controllers.user_controller import UserController
+from app.decorator import admin_permission_required
 import datetime
 
 validate = Validation()
@@ -65,17 +65,3 @@ class Login(MethodView):
 
 login_view = Login.as_view("login_view")
 auth_blueprint.add_url_rule("/api/auth/login",view_func=login_view, methods=["POST"])
-
-def admin_permission_required(yx):
-    #  A decorator function to wrap and replace the normal jwt_required function
-    @wraps(yx)
-    def decorated_function(*args, **kwargs):
-        # check role of user in token.
-        verify_jwt_in_request()
-        logged_user = get_jwt_identity()
-        user_role = user_controller.get_user_role(user_name=logged_user)
-        if user_role["role"] != 'admin':
-            return jsonify({"message": "You need Admin previllages to access this route"}), 403
-        else:
-            return yx(*args, **kwargs)
-    return decorated_function

@@ -1,67 +1,44 @@
 import psycopg2
 import psycopg2.extras as extra
 from app import app
+from pprint import pprint
+from codecs import open
+import os
 
 
 class DBConnection:
     def __init__(self):
-        self.con = psycopg2.connect(
-            database="store_manager", user="postgres", password="araali", host="localhost", port="5432")
-        self.con.autocommit = True
-        self.dict_cursor = self.con.cursor(cursor_factory=extra.RealDictCursor)
+        try:
+            if os.environ["APP_SETTINGS"] == "TESTING":
+                self.con = psycopg2.connect(
+                    database=os.environ["DATABASE_NAME"], user=os.environ["DATABASE_USER"], password=os.environ["DATABASE_PASSWORD"], host=os.environ["DATABASE_HOST"], port=os.environ["DATABASE_PORT"])
+            else:
+                self.con = psycopg2.connect(
+                database="store_manager", user="postgres", password="araali", host="localhost", port="5432")        
+            self.con.autocommit = True
+            self.dict_cursor = self.con.cursor(cursor_factory=extra.RealDictCursor)
+        except Exception as ex:
+            pprint("Database connection error: "+str(ex))    
 
     def create_tables(self):
-        queries = (
-            """
-            CREATE TABLE IF NOT EXISTS users (
-                user_id SERIAL PRIMARY KEY,
-                username VARCHAR(50) NOT NULL,
-                contact VARCHAR(50) NOT NULL,
-                role VARCHAR(10) NOT NULL,
-                password VARCHAR(25) NOT NULL
-            )
-            """,
-
-            """
-			CREATE TABLE IF NOT EXISTS products (
-				product_id SERIAL PRIMARY KEY,
-					product VARCHAR(50) NOT NULL,
-					quantity INTEGER NOT NULL,
-					unit_price INTEGER NOT NULL,
-                    reg_date timestamp NOT NULL
-							
-						)
-					"""
-            # ,
-
-            # """
-            # CREATE TABLE IF NOT EXISTS sales (
-            #     sale_id SERIAL PRIMARY KEY,
-            #     product VARCHAR(50) NOT NULL,
-            #     quantity INTEGER NOT NULL,
-            #     amount INTEGER NOT NULL,
-            #     attendant VARCHAR(50) NOT NULL,
-            #     date timestamp NOT NULL
-            # )
-            # """
-        )
+        create_users_table=open('app/db/create_users.sql', mode='r', encoding='utf-8-sig').read()
+        create_products_table=open('app/db/create_products.sql', mode='r', encoding='utf-8-sig').read()
+        create_sales_table=open('app/db/create_sales.sql', mode='r', encoding='utf-8-sig').read()
+        queries = (create_users_table, create_products_table, create_sales_table)
+        
         for query in queries:
             self.dict_cursor.execute(query)
 
     def delete_test_tables(self):
-
         delete_queries = (
             """
             DROP TABLE IF EXISTS users CASCADE
             """,
-
             """
 			DROP TABLE IF EXISTS products CASCADE
-						""",
-
+			""",
             """
             DROP TABLE IF EXISTS sales CASCADE
-            """
-        )
+            """)
         for query in delete_queries:
             self.dict_cursor.execute(query)

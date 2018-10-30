@@ -6,3 +6,4 @@ app/controllers/*.pyc
 app/db/*.pyc
 app/models/*.pyc
 .env
+app/views/*.pyc

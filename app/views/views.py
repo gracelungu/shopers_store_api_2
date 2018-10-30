@@ -11,7 +11,6 @@ views_blueprint = Blueprint("views_blueprint", __name__)
 
 
 class AddProduct(MethodView):
-    # @jwt_required
     @admin_permission_required
     def post(self):
         try:
@@ -48,6 +47,12 @@ class AddProduct(MethodView):
         except Exception as exception:
             return jsonify({"message": str(exception)}), 400
 
+class FetchAllProducts(MethodView):
+    def get(self):
+        all_products = product_controller.fetch_all_products()
+        if all_products:
+            return jsonify({"available products": all_products}), 200
+        return jsonify({"message": "no products added yet"}), 404
 
 class DeleteProduct(MethodView):
     def delete(self, product_id):
@@ -87,13 +92,15 @@ class UpdateProduct(MethodView):
             return jsonify({"message": "product not updated or doesn't exist"}), 400
         return jsonify({"message": "a 'key(s)' is missing in your request body"}), 400
 
-
 add_product_view = AddProduct.as_view("add_product_view")
+fetch_all_products_view = FetchAllProducts.as_view("fetch_all_products_view")
 delete_product_view = DeleteProduct.as_view("delete_product_view")
 update_product_view = UpdateProduct.as_view("update_product_view")
 
 views_blueprint.add_url_rule(
     "/api/v1/products", view_func=add_product_view, methods=["POST"])
+views_blueprint.add_url_rule(
+    "/api/v1/products", view_func=fetch_all_products_view, methods=["GET"])    
 views_blueprint.add_url_rule(
     "/api/v1/products/<product_id>", view_func=delete_product_view, methods=["DELETE"])
 views_blueprint.add_url_rule(

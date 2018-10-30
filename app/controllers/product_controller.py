@@ -42,3 +42,8 @@ class ProductController:
         if delete_item:
             return True
         return False
+
+    def fetch_all_products(self):
+        # fetch all available products
+        available_products = self.dbcon.get_all_products()
+        return available_products    

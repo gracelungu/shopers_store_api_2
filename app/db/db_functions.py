@@ -53,7 +53,7 @@ class DBFunctions:
         return False
 
     def update_product(self, product, quantity, unit_price, product_id):
-    #function to update product
+        #function to update product
         try:
             query = ("""UPDATE products SET product = '{}', quantity = '{}', unit_price = '{}' where product_id = '{}'""" .format(
                 product, quantity, unit_price, product_id))

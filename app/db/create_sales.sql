@@ -2,18 +2,11 @@
 
 -- DROP TABLE public.sales;
 
-CREATE TABLE IF NOT EXISTS public.sales
-(
-  sale_id integer NOT NULL DEFAULT nextval('sales_sale_id_seq'::regclass),
-  product character varying(50) NOT NULL,
-  quantity integer NOT NULL,
-  amount integer NOT NULL,
-  attendant character varying(50) NOT NULL,
-  date timestamp without time zone NOT NULL,
-  CONSTRAINT sales_pkey PRIMARY KEY (sale_id)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE public.sales
-  OWNER TO postgres;
+CREATE TABLE IF NOT EXISTS sales (
+            sale_id SERIAL PRIMARY KEY,
+            product VARCHAR(50) NOT NULL,
+            quantity INTEGER NOT NULL,
+            amount INTEGER NOT NULL,
+            attendant VARCHAR(50) NOT NULL,
+            date timestamp NOT NULL
+            )

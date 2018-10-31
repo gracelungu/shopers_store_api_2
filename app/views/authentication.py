@@ -60,7 +60,7 @@ class Login(MethodView):
                 user_token["logged in user"]=user_name
                 user_token["token"] = access_token
                 return jsonify(user_token), 200
-            return jsonify({"message": "user does not exist"}), 404
+            return jsonify({"message": "wrong login credentials or user does not exist"}), 400
         return jsonify({"message": "a 'key(s)' is missing in login body"}), 400
 
 login_view = Login.as_view("login_view")

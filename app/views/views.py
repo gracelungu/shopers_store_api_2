@@ -56,6 +56,7 @@ class AddProduct(MethodView):
 
 
 class FetchAllProducts(MethodView):
+    @jwt_required
     def get(self):
         all_products = product_controller.fetch_all_products()
         if all_products:
@@ -64,6 +65,7 @@ class FetchAllProducts(MethodView):
 
 
 class FetchSingleProduct(MethodView):
+    @jwt_required
     def get(self, product_id):
         invalid = validate.validate_input_type(product_id)
         if invalid:
@@ -76,6 +78,7 @@ class FetchSingleProduct(MethodView):
 
 
 class DeleteProduct(MethodView):
+    @admin_permission_required
     def delete(self, product_id):
         invalid = validate.validate_input_type(product_id)
         if invalid:
@@ -88,6 +91,7 @@ class DeleteProduct(MethodView):
 
 
 class UpdateProduct(MethodView):
+    @admin_permission_required
     def put(self, product_id):
         invalid_id = validate.validate_input_type(product_id)
         if invalid_id:
@@ -122,15 +126,15 @@ delete_product_view = DeleteProduct.as_view("delete_product_view")
 update_product_view = UpdateProduct.as_view("update_product_view")
 
 views_blueprint.add_url_rule(
-    "/api/v1/products", view_func=add_product_view, methods=["POST"])
+    "/api/v2/products", view_func=add_product_view, methods=["POST"])
 views_blueprint.add_url_rule(
-    "/api/v1/products", view_func=fetch_all_products_view, methods=["GET"])
-views_blueprint.add_url_rule("/api/v1/products/<product_id>",
+    "/api/v2/products", view_func=fetch_all_products_view, methods=["GET"])
+views_blueprint.add_url_rule("/api/v2/products/<product_id>",
                              view_func=fetch_single_product_view, methods=["GET"])
 views_blueprint.add_url_rule(
-    "/api/v1/products/<product_id>", view_func=delete_product_view, methods=["DELETE"])
+    "/api/v2/products/<product_id>", view_func=delete_product_view, methods=["DELETE"])
 views_blueprint.add_url_rule(
-    "/api/v1/products/<product_id>", view_func=update_product_view, methods=["PUT"])
+    "/api/v2/products/<product_id>", view_func=update_product_view, methods=["PUT"])
 
 """SALES VIEWS"""
 class CreateSalesRecord(MethodView):
@@ -152,7 +156,7 @@ class CreateSalesRecord(MethodView):
             if make_sale:
                 return jsonify({"message": "sale record successfully added", "sales": db_func.get_newest_sale()}), 201
             else:
-                return jsonify({"message": "sale record not added or product is not available"}), 400
+                return jsonify({"message": "sale record not added. Product not available or is at minimum quantity"}), 400
 
 class FetchAllSales(MethodView):
     @jwt_required
@@ -189,8 +193,8 @@ all_sales_view = FetchAllSales.as_view("all_sales_view")
 single_sales_view = FetchSingleSaleRecord.as_view("single_sales_view")
 
 
-views_blueprint.add_url_rule("/api/v1/sales/<product_id>", view_func=make_sales_view, methods=["POST"])
-views_blueprint.add_url_rule("/api/v1/sales", view_func=all_sales_view, methods=["GET"])
-views_blueprint.add_url_rule("/api/v1/sales/<sale_id>", view_func=single_sales_view, methods=["GET"])
+views_blueprint.add_url_rule("/api/v2/sales/<product_id>", view_func=make_sales_view, methods=["POST"])
+views_blueprint.add_url_rule("/api/v2/sales", view_func=all_sales_view, methods=["GET"])
+views_blueprint.add_url_rule("/api/v2/sales/<sale_id>", view_func=single_sales_view, methods=["GET"])
 
 

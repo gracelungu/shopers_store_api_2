@@ -24,5 +24,13 @@ class SaleController:
             return True
         else:
             return False
-    def fetch_newest_sale(self):
-        pass        
+
+    def fetch_all_sales(self):
+        # fetch all available sale records
+        all_sales = self.dbcon.get_all_sales()
+        return all_sales
+
+    def fetch_all_sales_for_user(self, user_name):
+        # fetch all available sale records for a particular user
+        all_sales = self.dbcon.get_all_sales_for_user(user_name=user_name)
+        return all_sales    

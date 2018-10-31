@@ -99,3 +99,15 @@ class DBFunctions:
         self.cursor.execute("SELECT * FROM sales ORDER BY sale_id DESC LIMIT 1")
         newest_record = self.cursor.fetchall()
         return newest_record
+
+    def get_all_sales(self):
+        #function to get all available sales
+        self.cursor.execute("SELECT * from sales")
+        all_sales = self.cursor.fetchall()
+        return all_sales
+
+    def get_all_sales_for_user(self, user_name):
+        #function to get all available sales
+        self.cursor.execute("SELECT * FROM sales WHERE attendant = '{}'" .format(user_name))
+        sale_record = self.cursor.fetchall()
+        return sale_record 

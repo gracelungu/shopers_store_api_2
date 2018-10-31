@@ -6,10 +6,12 @@ from app.validation import Validation
 from app.decorator import admin_permission_required
 from app.controllers.product_controller import ProductController
 from app.controllers.sale_controller import SaleController
+from app.controllers.user_controller import UserController
 from app.db.db_functions import DBFunctions
 
 validate = Validation()
 product_controller = ProductController()
+user_controller = UserController()
 sale_controller = SaleController()
 db_func = DBFunctions()
 views_blueprint = Blueprint("views_blueprint", __name__)
@@ -152,5 +154,22 @@ class CreateSalesRecord(MethodView):
             else:
                 return jsonify({"message": "sale record not added or product is not available"}), 400
 
+class FetchAllSales(MethodView):
+    @jwt_required
+    def get(self):
+        logged_user = get_jwt_identity()
+        user_role = user_controller.get_user_role(user_name=logged_user)
+        if user_role["role"] == 'admin':
+            all_sales = sale_controller.fetch_all_sales()
+        elif user_role["role"] == 'attendant':
+            all_sales = sale_controller.fetch_all_sales_for_user(user_name=logged_user)
+        if all_sales:
+            return jsonify({"Sale Records": all_sales}), 200
+        return jsonify({"message": "no sles recorded yet"}), 404    
+
 make_sales_view = CreateSalesRecord.as_view("make_sales_view")
+all_sales_view = FetchAllSales.as_view("all_sales_view")
+
 views_blueprint.add_url_rule("/api/v1/sales/<product_id>", view_func=make_sales_view, methods=["POST"])
+views_blueprint.add_url_rule("/api/v1/sales", view_func=all_sales_view, methods=["GET"])
+

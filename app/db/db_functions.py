@@ -80,4 +80,10 @@ class DBFunctions:
         if int(delete) > 0:
             return True
         else:
-            return False   
+            return False
+
+    def get_all_products(self):
+        #function to get all added products
+        self.cursor.execute("SELECT * from products")
+        all_products = self.cursor.fetchall()
+        return all_products     

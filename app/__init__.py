@@ -1,9 +1,10 @@
 from flask import Flask
+import os
 
 app = Flask(__name__)
 
-from app.auth.authentication import auth_blueprint
-from app.views import views_blueprint
+from app.views.authentication import auth_blueprint
+from app.views.views import views_blueprint
 app.register_blueprint(auth_blueprint)
 app.register_blueprint(views_blueprint)
 

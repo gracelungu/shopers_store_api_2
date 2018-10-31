@@ -32,11 +32,11 @@ class DBConnection:
         queries = (create_users_table,
                    create_products_table, create_sales_table)
 
-        try:
-            for query in queries:
-                self.dict_cursor.execute(query)
-        except Exception as ex:
-            pprint("Table creation error: "+str(ex))    
+        # try:
+        for query in queries:
+            self.dict_cursor.execute(query)
+        # except Exception as ex:
+        #     pprint("Table creation error: "+str(ex))    
 
     def delete_tables(self):
         delete_queries = (

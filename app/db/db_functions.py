@@ -110,4 +110,16 @@ class DBFunctions:
         #function to get all available sales
         self.cursor.execute("SELECT * FROM sales WHERE attendant = '{}'" .format(user_name))
         sale_record = self.cursor.fetchall()
-        return sale_record 
+        return sale_record
+
+    def get_single_sale(self, sale_id):
+        #function to get the most recent sale record made
+        self.cursor.execute("SELECT * FROM sales WHERE sale_id = '{}'" .format(sale_id))
+        sale_record = self.cursor.fetchall()
+        return sale_record
+
+    def get_single_sale_for_user(self, sale_id, user_name):
+        #function to get the most recent sale record made
+        self.cursor.execute("SELECT * FROM sales WHERE sale_id = '{}' AND attendant = '{}'" .format(sale_id, user_name))
+        sale_record = self.cursor.fetchall()
+        return sale_record    

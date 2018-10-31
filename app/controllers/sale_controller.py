@@ -33,4 +33,14 @@ class SaleController:
     def fetch_all_sales_for_user(self, user_name):
         # fetch all available sale records for a particular user
         all_sales = self.dbcon.get_all_sales_for_user(user_name=user_name)
-        return all_sales    
+        return all_sales
+    
+    def fetch_single_sale(self, sale_id):
+        # fetch a sale record
+        sale_record = self.dbcon.get_single_sale(sale_id=sale_id)
+        return sale_record
+
+    def fetch_single_sale_for_user(self, sale_id, user_name):
+        # fetch a sale record for a particular user
+        sale_record = self.dbcon.get_single_sale_for_user(sale_id=sale_id, user_name=user_name)
+        return sale_record  

@@ -167,9 +167,30 @@ class FetchAllSales(MethodView):
             return jsonify({"Sale Records": all_sales}), 200
         return jsonify({"message": "no sles recorded yet"}), 404    
 
+class FetchSingleSaleRecord(MethodView):
+    @jwt_required
+    def get(self, sale_id):
+        invalid = validate.validate_input_type(sale_id)
+        if invalid:
+            return jsonify({"message": invalid}), 400
+        logged_user = get_jwt_identity()
+        user_role = user_controller.get_user_role(user_name=logged_user)
+        if user_role["role"] == 'admin':    
+            sale_record = sale_controller.fetch_single_sale(sale_id=sale_id)
+        elif user_role["role"] == 'attendant':
+            sale_record = sale_controller.fetch_single_sale_for_user(sale_id=sale_id, user_name=logged_user)
+        if sale_record:
+            return jsonify({"Sale details": sale_record}), 200
+        return jsonify({"message": "sale record not added yet"}), 404
+
+
 make_sales_view = CreateSalesRecord.as_view("make_sales_view")
 all_sales_view = FetchAllSales.as_view("all_sales_view")
+single_sales_view = FetchSingleSaleRecord.as_view("single_sales_view")
+
 
 views_blueprint.add_url_rule("/api/v1/sales/<product_id>", view_func=make_sales_view, methods=["POST"])
 views_blueprint.add_url_rule("/api/v1/sales", view_func=all_sales_view, methods=["GET"])
+views_blueprint.add_url_rule("/api/v1/sales/<sale_id>", view_func=single_sales_view, methods=["GET"])
+
 

@@ -1,12 +1,17 @@
 from flask import jsonify, request, Blueprint
 from flask.views import MethodView
+from datetime import datetime
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from app.validation import Validation
 from app.decorator import admin_permission_required
 from app.controllers.product_controller import ProductController
+from app.controllers.sale_controller import SaleController
+from app.db.db_functions import DBFunctions
 
 validate = Validation()
 product_controller = ProductController()
+sale_controller = SaleController()
+db_func = DBFunctions()
 views_blueprint = Blueprint("views_blueprint", __name__)
 
 """PRODUCT VIEWS"""
@@ -126,3 +131,26 @@ views_blueprint.add_url_rule(
     "/api/v1/products/<product_id>", view_func=update_product_view, methods=["PUT"])
 
 """SALES VIEWS"""
+class CreateSalesRecord(MethodView):
+    @jwt_required
+    def post(self, product_id):
+        data = request.get_json()
+        if "quantity" in data.keys():
+            quantity = data.get("quantity")
+            date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            attendant = get_jwt_identity()
+            invalid_quantity = validate.validate_input_type(quantity)
+            if invalid_quantity:
+                return jsonify({"message": invalid_quantity}), 400
+            invalid_id = validate.validate_input_type(product_id)
+            if invalid_id:
+                return jsonify({"message": invalid_id}), 400
+            make_sale = sale_controller.add_sale_record(
+                product_id=product_id, quantity=quantity, attendant=attendant, date=date)
+            if make_sale:
+                return jsonify({"message": "sale record successfully added", "sales": db_func.get_newest_sale()}), 201
+            else:
+                return jsonify({"message": "sale record not added or product is not available"}), 400
+
+make_sales_view = CreateSalesRecord.as_view("make_sales_view")
+views_blueprint.add_url_rule("/api/v1/sales/<product_id>", view_func=make_sales_view, methods=["POST"])

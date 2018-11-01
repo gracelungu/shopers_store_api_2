@@ -86,4 +86,16 @@ class DBFunctions:
         #function to get all added products
         self.cursor.execute("SELECT * from products")
         all_products = self.cursor.fetchall()
-        return all_products     
+        return all_products
+
+    def create_sale_record(self, product, quantity, amount, attendant, date):
+        #create a sale record
+        query = (
+            """INSERT INTO sales (product, quantity, amount, attendant, date) VALUES ('{}', '{}', '{}', '{}', '{}')""".format(product, quantity, amount, attendant, date))
+        self.cursor.execute(query)
+    
+    def get_newest_sale(self):
+        #function to get the most recent sale record made
+        self.cursor.execute("SELECT * FROM sales ORDER BY sale_id DESC LIMIT 1")
+        newest_record = self.cursor.fetchall()
+        return newest_record

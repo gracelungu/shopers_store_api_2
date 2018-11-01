@@ -1,0 +1,192 @@
+FORMAT: 1A
+HOST: https://shopers-store-api-2.herokuapp.com
+
+# araaliFarooq 
+
+This is an API of an application to manage and record transcations of a shopping store
+
+## Register User [/api/auth/register]
+
+### Create new user account [POST]
+
++ Request (application/json)
+
+        
+            {
+                "user_name": "araali",
+                "contact": "0702-000000",
+                "password":"password" 
+                }
+                
++ Response 201
+
+## Login User [/api/auth/login]
+
+### User Login [POST]
+
++ Request (application/json)
+
+        {
+            "username": "araali",
+            "password":"password"
+        }
+
++ Response 200 (application/json)
+
+
+## Post new product [/api/v2/products]
+
+### Post new product [POST]
+
++ Request (application/json)
+
+        
+            {
+                "product":"V Shirts",
+                "quantity":"20",
+                "unit_price":"20000"
+                }
+                
++ Response 201
+
+### fetch all products [GET]
+
++ Response 200
+            
+        {
+        "available_products": [
+            {
+                "product": "V Shirt",
+                "product_id": 4,
+                "quantity": 20,
+                "unit_price": 20000
+            },
+            {
+                "product": "T-Shirts",
+                "product_id": 2,
+                "quantity": 30,
+                "unit_price": 20000
+            },
+            {
+                "product": "V Shirts",
+                "product_id": 3,
+                "quantity": 50,
+                "unit_price": 20000
+            }
+        ]
+        }
+
+## Create sale record [/api/v2/sales]
+
+### Create sale record [POST]
+
++ Request (application/json)
+
+        
+            {
+                "product_id":"1",
+                "quantity":"20"
+                
+                }
+                
++ Response 201
+
+
+### fetch all sale records [GET]
+
++ Response 200
+        
+        {
+        "sale_records": [
+        {
+            "amount": 60000,
+            "attendant": "admin",
+            "date": "Thu, 01 Nov 2018 19:47:16 GMT",
+            "product": "T-Shirts",
+            "quantity": 30,
+            "sale_id": 1
+        },
+        {
+            "amount": 600000,
+            "attendant": "admin",
+            "date": "Fri, 02 Nov 2018 18:19:50 GMT",
+            "product": "T-Shirts",
+            "quantity": 30,
+            "sale_id": 3
+        }
+        ]
+        }
+
+## Fetch a single product [/api/v2/products/1]  
+        
+### fetch a single product [GET]
+
++ Response 200
+        
+        {
+        "product_details": {
+            "product": "V Shirts",
+            "product_id": 3,
+            "quantity": 50,
+            "unit_price": 20000
+        }
+        }
+
+## Fetch a single sale [/api/v2/sales/1]  
+        
+### fetch a single sale [GET]
+
++ Response 200
+        
+        {
+        "Sale_details": [
+            {
+                "amount": 60000,
+                "attendant": "admin",
+                "date": "Thu, 01 Nov 2018 19:48:28 GMT",
+                "product": "T-Shirts",
+                "quantity": 30,
+                "sale_id": 2
+            }
+        ]
+        } 
+
+## Update a product [/api/v2/products/1]  
+        
+### Update a product [PUT]
+
++ Response 200
+        
+        {
+        "message": "product successfully updated.",
+            "product": {
+                "product": "T-Shirts",
+            "product_id": 2,
+            "quantity": 200,
+            "unit_price": 2000
+            }
+        }      
+ 
+## Delete a product [/api/v2/products/1]
+
+### Delete a product [DELETE]
++ Request 
+
++ Response 200
+
+## Update a user role [/api/auth/users]  
+        
+### Update a user role [PUT]
+
++ Response 200
+        
+        {
+        "message": "user role succesfully updated",
+        "user": {
+        "contact": "0703-645802",
+        "password": "araali",
+        "role": "admin",
+        "user_id": 3,
+        "username": "barna"
+        }
+        }

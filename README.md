@@ -11,7 +11,6 @@ This is an API of an application to manage and record transcations of a shopping
 ## API Documentation
 - https://araalifarooq.docs.apiary.io
 
-
 ## Features
 - Login
 - Create an attendant's account

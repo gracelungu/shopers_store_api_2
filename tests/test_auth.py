@@ -189,4 +189,109 @@ class Test_auth(BaseTestCase):
         )
         reply = json.loads(response.data)
         self.assertEqual(reply.get("message"), "password is missing")
-        self.assertEqual(response.status_code, 400)                     
+        self.assertEqual(response.status_code, 400)
+
+    def test_user_update_success(self):
+        """ Test for successful user register """
+        admin_login= self.admin_login()
+        response = self.app.post("/api/auth/register",
+                                 content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
+                                 data=json.dumps(dict(user_name="araali2", contact="0700-000000", role="attendant", password="araali"),)
+                                 )
+        response = self.app.put("/api/auth/users",
+                                 content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
+                                 data=json.dumps(dict(user_name="araali2", contact="0700-000000", role="admin", password="araali"),)
+                                 )                         
+        reply = json.loads(response.data)
+        self.assertEqual(reply.get("message"), "user role succesfully updated")
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_update_with_wrong_username(self):
+        """ Test for successful user register """
+        admin_login= self.admin_login()
+        response = self.app.post("/api/auth/register",
+                                 content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
+                                 data=json.dumps(dict(user_name="araali2", contact="0700-000000", role="attendant", password="araali"),)
+                                 )
+        response = self.app.put("/api/auth/users",
+                                 content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
+                                 data=json.dumps(dict(user_name=" ", contact="0700-000000", role="admin", password="araali"),)
+                                 )                         
+        reply = json.loads(response.data)
+        self.assertEqual(reply.get("message"), "username is missing")
+        self.assertEqual(response.status_code, 400)
+
+    def test_user_update_with_no_user(self):
+        """ Test for successful user register """
+        admin_login= self.admin_login()
+        response = self.app.post("/api/auth/register",
+                                 content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
+                                 data=json.dumps(dict(user_name="araali2", contact="0700-000000", role="attendant", password="araali"),)
+                                 )
+        response = self.app.put("/api/auth/users",
+                                 content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
+                                 data=json.dumps(dict(user_name="araali22", contact="0700-000000", role="admin", password="araali"),)
+                                 )                         
+        reply = json.loads(response.data)
+        self.assertEqual(reply.get("message"), "user does not exist")
+        self.assertEqual(response.status_code, 400)   
+
+    def test_user_update_with_missing_keys(self):
+        """ Test for successful user register """
+        admin_login= self.admin_login()
+        response = self.app.post("/api/auth/register",
+                                 content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
+                                 data=json.dumps(dict(user_name="araali2", contact="0700-000000", role="attendant", password="araali"),)
+                                 )
+        response = self.app.put("/api/auth/users",
+                                 content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
+                                 data=json.dumps(dict(user_na="araali22", contact="0700-000000", role="admin", password="araali"),)
+                                 )                         
+        reply = json.loads(response.data)
+        self.assertEqual(reply.get("message"), "a 'key(s)' is missing in update body")
+        self.assertEqual(response.status_code, 400)
+
+    def test_user_update_with_white_spaces(self):
+        """ Test for successful user register """
+        admin_login= self.admin_login()
+        response = self.app.post("/api/auth/register",
+                                 content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
+                                 data=json.dumps(dict(user_name="araali2", contact="0700-000000", role="attendant", password="araali"),)
+                                 )
+        response = self.app.put("/api/auth/users",
+                                 content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
+                                 data=json.dumps(dict(user_name="  araali22", contact="0700-000000", role="admin", password="araali"),)
+                                 )                         
+        reply = json.loads(response.data)
+        self.assertEqual(reply.get("message"), "username must have no white spaces")
+        self.assertEqual(response.status_code, 400)
+
+    def test_user_update_with_wrong_role(self):
+        """ Test for successful user register """
+        admin_login= self.admin_login()
+        response = self.app.post("/api/auth/register",
+                                 content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
+                                 data=json.dumps(dict(user_name="araali2", contact="0700-000000", role="attendant", password="araali"),)
+                                 )
+        response = self.app.put("/api/auth/users",
+                                 content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
+                                 data=json.dumps(dict(user_name="araali22", contact="0700-000000", role="administer", password="araali"),)
+                                 )                         
+        reply = json.loads(response.data)
+        self.assertEqual(reply.get("message"), "role should either be admin or attendant")
+        self.assertEqual(response.status_code, 400)
+
+    def test_user_update_with_no_username(self):
+        """ Test for successful user register """
+        admin_login= self.admin_login()
+        response = self.app.post("/api/auth/register",
+                                 content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
+                                 data=json.dumps(dict(user_name="araali2", contact="0700-000000", role="attendant", password="araali"),)
+                                 )
+        response = self.app.put("/api/auth/users",
+                                 content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
+                                 data=json.dumps(dict(user_name="", contact="0700-000000", role="administer", password="araali"),)
+                                 )                         
+        reply = json.loads(response.data)
+        self.assertEqual(reply.get("message"), "usename is missing")
+        self.assertEqual(response.status_code, 400)                                             

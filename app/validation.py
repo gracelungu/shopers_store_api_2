@@ -22,7 +22,17 @@ class Validation:
         if not user_name:
             return "username is missing"
         if not password:
-            return "password is missing" 
+            return "password is missing"
+
+    def user_update_validation(self, user_name, role):
+        if not user_name:
+            return "usename is missing"
+        if user_name == " ":
+            return "username is missing"
+        if not re.match(r"^([a-zA-Z\d]+[-_])*[a-zA-Z\d*]+$", user_name):
+            return "username must have no white spaces"
+        if (role != "admin" and role != "attendant"):
+            return "role should either be admin or attendant"       
     
     def product_validation(self, product_name, quantity, unit_price):
         if not product_name:

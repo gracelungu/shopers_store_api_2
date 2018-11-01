@@ -6,7 +6,10 @@
 This is an API of an application to manage and record transcations of a shopping store
 
 ## Heroku demo link
+- https://shopers-store-api-2.herokuapp.com/
 
+## API Documentation
+- https://araalifarooq.docs.apiary.io
 
 ## Features
 - Login
@@ -20,6 +23,8 @@ This is an API of an application to manage and record transcations of a shopping
 - Update a prooduct item
 - Delete a product item
 
+## Other features
+- Update the role of an attendant
 
 ## Tools Used
 - [Flask](http://flask.pocoo.org/) - web microframework for Python
@@ -68,6 +73,7 @@ DELETE | /api/v2/products/<product_id> | False | Delete a single product
 PUT | /api/v2/products/<product_id> | False | Edit details of a single product
 GET | /api/v2/sales/<sale_id> | False | Fetch details of a single sale record
 GET | /api/v2/sales | False | Fetch all sale records created
+PUT | /api/auth/users | False | Change the role of an attendant
 
 ## Authors
 [Araali Sseruwu Farooq](https://github.com/araalifarooq)

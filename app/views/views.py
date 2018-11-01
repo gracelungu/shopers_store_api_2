@@ -40,14 +40,14 @@ class AddProduct(MethodView):
                                                       quantity=new_quantity, unit_price=unit_price, product_id=product_exists["product_id"])
                     return jsonify({
                         "message":
-                            "product already exits, so its quantity has been updated", "Product":
+                            "product already exits, so its quantity has been updated", "product":
                             product_controller.get_single_product(product_exists["product_id"])}), 200
                 product_added = product_controller.add_product(product_name=product, quantity=int(
                     quantity), unit_price=int(unit_price))
                 if product_added:
                     return jsonify({
                         "message":
-                        "product successfully added.", "Product": product_controller.does_product_exist(product_name=product)
+                        "product successfully added.", "product": product_controller.does_product_exist(product_name=product)
                     }), 201
                 return jsonify({"message": "product not added"}), 400
             return jsonify({"message": "a 'key(s)' is missing in your request body"}), 400
@@ -112,7 +112,7 @@ class UpdateProduct(MethodView):
             if update:
                 return jsonify({
                     "message":
-                        "product successfully updated.", "Product": product_controller.get_single_product(product_id=product_id)
+                        "product successfully updated.", "product": product_controller.get_single_product(product_id=product_id)
                 }), 200
             return jsonify({"message": "product not updated or doesn't exist"}), 400
         return jsonify({"message": "a 'key(s)' is missing in your request body"}), 400
@@ -170,7 +170,7 @@ class FetchAllSales(MethodView):
         elif user_role["role"] == 'attendant':
             all_sales = sale_controller.fetch_all_sales_for_user(user_name=logged_user)
         if all_sales:
-            return jsonify({"Sale_records": all_sales}), 200
+            return jsonify({"sale_records": all_sales}), 200
         return jsonify({"message": "no sles recorded yet"}), 404    
 
 class FetchSingleSaleRecord(MethodView):
@@ -186,7 +186,7 @@ class FetchSingleSaleRecord(MethodView):
         elif user_role["role"] == 'attendant':
             sale_record = sale_controller.fetch_single_sale_for_user(sale_id=sale_id, user_name=logged_user)
         if sale_record:
-            return jsonify({"Sale_details": sale_record}), 200
+            return jsonify({"sale_details": sale_record}), 200
         return jsonify({"message": "sale record not added yet"}), 404
 
 

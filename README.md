@@ -41,6 +41,16 @@ First clone the repository
     $ pip install -r requirements.txt
     $ python run.py
 ```
+## Runtime environment variable configs for TESTS
+```
+    $ Set APP_SETTINGS to TESTING
+```
+## Runtime environment variable configs for DEVELOPMENT
+```
+    $ Set APP_SETTINGS to DEVELOPMENT
+    $ Set values of your choice for dbname, host, user, password and port for the PostgreSQL database
+```
+
 #### Endpoints to create an attendants account and login into the application
 HTTP Method|End point | Public Access|Action
 -----------|----------|--------------|------

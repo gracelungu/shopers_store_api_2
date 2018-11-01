@@ -50,14 +50,14 @@ POST | /api/auth/login | True | Login a user
 #### Endpoints to create, views available products and create sale records
 HTTP Method|End point | Public Access|Action
 -----------|----------|--------------|------
-POST | /api/v1/products | False | Create a product
-POST | /api/v1/sales | False | Create a sale order
-GET | /api/v1/products | False | Fetch all available products
-GET | /api/v1/products/<product_id> | False | Fetch details of a single product
-DELETE | /api/v1/products/<product_id> | False | Delete a single product
-PUT | /api/v1/products/<product_id> | False | Edit details of a single product
-GET | /api/v1/sales/<sale_id>/answer | False | Fetch details of a single sale record
-GET | /api/v1/sales | False | Fetch all sale records created
+POST | /api/v2/products | False | Create a product
+POST | /api/v2/sales | False | Create a sale order
+GET | /api/v2/products | False | Fetch all available products
+GET | /api/v2/products/<product_id> | False | Fetch details of a single product
+DELETE | /api/v2/products/<product_id> | False | Delete a single product
+PUT | /api/v2/products/<product_id> | False | Edit details of a single product
+GET | /api/v2/sales/<sale_id>/answer | False | Fetch details of a single sale record
+GET | /api/v2/sales | False | Fetch all sale records created
 
 ## Authors
 [Araali Sseruwu Farooq](https://github.com/araalifarooq)

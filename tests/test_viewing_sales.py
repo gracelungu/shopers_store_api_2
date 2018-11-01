@@ -10,9 +10,9 @@ class TestViewingSale(BaseTestCase):
                                     content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
                                     data=json.dumps(dict(product="Life Jackets", quantity="20",unit_price="200"),)   
                                 )
-            response = self.app.post("/api/v2/sales/1",
+            response = self.app.post("/api/v2/sales",
                                     content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
-                                    data=json.dumps(dict(product="Life Jackets", quantity="10",unit_price="200"),)   
+                                    data=json.dumps(dict(product_id="1", quantity="10",unit_price="200"),)   
                                 )                      
             response2 = self.app.get("/api/v2/sales",
                                  content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),)                 
@@ -25,9 +25,9 @@ class TestViewingSale(BaseTestCase):
                                     content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
                                     data=json.dumps(dict(product="Life Jackets", quantity="20",unit_price="200"),)   
                                 )
-            response = self.app.post("/api/v2/sales/1",
+            response = self.app.post("/api/v2/sales",
                                     content_type='application/json', headers=dict(Authorization='Bearer '+attendant_login['token']),
-                                    data=json.dumps(dict(product="Life Jackets", quantity="10",unit_price="200"),)   
+                                    data=json.dumps(dict(product_id="1", quantity="10",unit_price="200"),)   
                                 )                      
             response2 = self.app.get("/api/v2/sales",
                                  content_type='application/json', headers=dict(Authorization='Bearer '+attendant_login['token']),)                 
@@ -89,9 +89,9 @@ class TestViewingSale(BaseTestCase):
                                     content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
                                     data=json.dumps(dict(product="Life Jackets", quantity="20",unit_price="200"),)   
                                 )
-            response = self.app.post("/api/v2/sales/1",
+            response = self.app.post("/api/v2/sales",
                                     content_type='application/json', headers=dict(Authorization='Bearer '+attendant_login['token']),
-                                    data=json.dumps(dict(product="Life Jackets", quantity="10",unit_price="200"),)   
+                                    data=json.dumps(dict(product_id="1", quantity="10",unit_price="200"),)   
                                 )                      
             response2 = self.app.get("/api/v2/sales/1",
                                  content_type='application/json', headers=dict(Authorization='Bearer '+attendant_login['token']),)                 

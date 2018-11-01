@@ -10,9 +10,9 @@ class TestCreatingSale(BaseTestCase):
                                     content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
                                     data=json.dumps(dict(product="Life Jackets", quantity="20",unit_price="200"),)   
                                 )
-            response = self.app.post("/api/v2/sales/2",
+            response = self.app.post("/api/v2/sales",
                                     content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
-                                    data=json.dumps(dict(product="Life Jackets", quantity="30",unit_price="200"),)   
+                                    data=json.dumps(dict(product_id="2", quantity="30",unit_price="200"),)   
                                 )                      
             reply = json.loads(response.data.decode())
             self.assertEqual(reply.get("message"), "sale record not added. Product not available or is at minimum quantity")
@@ -24,9 +24,9 @@ class TestCreatingSale(BaseTestCase):
                                     content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
                                     data=json.dumps(dict(product="Life Jackets", quantity="20",unit_price="200"),)   
                                 )
-            response = self.app.post("/api/v2/sales/1",
+            response = self.app.post("/api/v2/sales",
                                     content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
-                                    data=json.dumps(dict(product="Life Jackets", quantity="10",unit_price="200"),)   
+                                    data=json.dumps(dict(product_id="1", quantity="10",unit_price="200"),)   
                                 )                      
             reply = json.loads(response.data.decode())
             self.assertEqual(reply.get("message"), "sale record successfully added")
@@ -38,9 +38,9 @@ class TestCreatingSale(BaseTestCase):
                                     content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
                                     data=json.dumps(dict(product="Life Jackets", quantity="20",unit_price="200"),)   
                                 )
-            response = self.app.post("/api/v2/sales/1",
+            response = self.app.post("/api/v2/sales",
                                     content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
-                                    data=json.dumps(dict(product="Life Jackets", quantity="30",unit_price="200"),)   
+                                    data=json.dumps(dict(product_id="1", quantity="30",unit_price="200"),)   
                                 )                      
             reply = json.loads(response.data.decode())
             self.assertEqual(reply.get("message"), "sale record not added. Product not available or is at minimum quantity")
@@ -52,9 +52,9 @@ class TestCreatingSale(BaseTestCase):
                                     content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
                                     data=json.dumps(dict(product="Life Jackets", quantity="20",unit_price="200"),)   
                                 )
-            response = self.app.post("/api/v2/sales/q",
+            response = self.app.post("/api/v2/sales",
                                     content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
-                                    data=json.dumps(dict(product="Life Jackets", quantity="10",unit_price="200"),)   
+                                    data=json.dumps(dict(product_id="q", quantity="10",unit_price="200"),)   
                                 )                      
             reply = json.loads(response.data.decode())
             self.assertEqual(reply.get("message"), "Input should be an interger")
@@ -66,9 +66,9 @@ class TestCreatingSale(BaseTestCase):
                                     content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
                                     data=json.dumps(dict(product="Life Jackets", quantity="20",unit_price="200"),)   
                                 )
-            response = self.app.post("/api/v2/sales/1",
+            response = self.app.post("/api/v2/sales",
                                     content_type='application/json', headers=dict(Authorization='Bearer '+admin_login['token']),
-                                    data=json.dumps(dict(product="Life Jackets", quantity="q",unit_price="200"),)   
+                                    data=json.dumps(dict(product_id="1", quantity="q",unit_price="200"),)   
                                 )                      
             reply = json.loads(response.data.decode())
             self.assertEqual(reply.get("message"), "Input should be an interger")

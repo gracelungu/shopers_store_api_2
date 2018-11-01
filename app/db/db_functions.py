@@ -122,4 +122,4 @@ class DBFunctions:
         #function to get the most recent sale record made
         self.cursor.execute("SELECT * FROM sales WHERE sale_id = '{}' AND attendant = '{}'" .format(sale_id, user_name))
         sale_record = self.cursor.fetchall()
-        return sale_record    
+        return sale_record 

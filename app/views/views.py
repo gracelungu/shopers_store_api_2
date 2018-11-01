@@ -40,14 +40,14 @@ class AddProduct(MethodView):
                                                       quantity=new_quantity, unit_price=unit_price, product_id=product_exists["product_id"])
                     return jsonify({
                         "message":
-                            "product already exits, so its quantity has been updated", "Updated Product":
+                            "product already exits, so its quantity has been updated", "Product":
                             product_controller.get_single_product(product_exists["product_id"])}), 200
                 product_added = product_controller.add_product(product_name=product, quantity=int(
                     quantity), unit_price=int(unit_price))
                 if product_added:
                     return jsonify({
                         "message":
-                        "product successfully added.", "New Product": product_controller.does_product_exist(product_name=product)
+                        "product successfully added.", "Product": product_controller.does_product_exist(product_name=product)
                     }), 201
                 return jsonify({"message": "product not added"}), 400
             return jsonify({"message": "a 'key(s)' is missing in your request body"}), 400
@@ -60,7 +60,7 @@ class FetchAllProducts(MethodView):
     def get(self):
         all_products = product_controller.fetch_all_products()
         if all_products:
-            return jsonify({"available products": all_products}), 200
+            return jsonify({"available_products": all_products}), 200
         return jsonify({"message": "no products added yet"}), 404
 
 
@@ -73,7 +73,7 @@ class FetchSingleProduct(MethodView):
         product_details = product_controller.get_single_product(
             product_id=product_id)
         if product_details:
-            return jsonify({"product details": product_details}), 200
+            return jsonify({"product_details": product_details}), 200
         return jsonify({"message": "product not added yet"}), 404
 
 
@@ -112,7 +112,7 @@ class UpdateProduct(MethodView):
             if update:
                 return jsonify({
                     "message":
-                        "product successfully updated.", "Updated Product": product_controller.get_single_product(product_id=product_id)
+                        "product successfully updated.", "Product": product_controller.get_single_product(product_id=product_id)
                 }), 200
             return jsonify({"message": "product not updated or doesn't exist"}), 400
         return jsonify({"message": "a 'key(s)' is missing in your request body"}), 400
@@ -139,9 +139,11 @@ views_blueprint.add_url_rule(
 """SALES VIEWS"""
 class CreateSalesRecord(MethodView):
     @jwt_required
-    def post(self, product_id):
+    def post(self):
         data = request.get_json()
-        if "quantity" in data.keys():
+        search_keys = ("product_id", "quantity")
+        if all(key in data.keys() for key in search_keys):
+            product_id = data.get("product_id")
             quantity = data.get("quantity")
             date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             attendant = get_jwt_identity()
@@ -154,7 +156,7 @@ class CreateSalesRecord(MethodView):
             make_sale = sale_controller.add_sale_record(
                 product_id=product_id, quantity=quantity, attendant=attendant, date=date)
             if make_sale:
-                return jsonify({"message": "sale record successfully added", "sales": db_func.get_newest_sale()}), 201
+                return jsonify({"message": "sale record successfully added", "sale": db_func.get_newest_sale()}), 201
             else:
                 return jsonify({"message": "sale record not added. Product not available or is at minimum quantity"}), 400
 
@@ -168,7 +170,7 @@ class FetchAllSales(MethodView):
         elif user_role["role"] == 'attendant':
             all_sales = sale_controller.fetch_all_sales_for_user(user_name=logged_user)
         if all_sales:
-            return jsonify({"Sale Records": all_sales}), 200
+            return jsonify({"Sale_records": all_sales}), 200
         return jsonify({"message": "no sles recorded yet"}), 404    
 
 class FetchSingleSaleRecord(MethodView):
@@ -184,7 +186,7 @@ class FetchSingleSaleRecord(MethodView):
         elif user_role["role"] == 'attendant':
             sale_record = sale_controller.fetch_single_sale_for_user(sale_id=sale_id, user_name=logged_user)
         if sale_record:
-            return jsonify({"Sale details": sale_record}), 200
+            return jsonify({"Sale_details": sale_record}), 200
         return jsonify({"message": "sale record not added yet"}), 404
 
 
@@ -193,7 +195,7 @@ all_sales_view = FetchAllSales.as_view("all_sales_view")
 single_sales_view = FetchSingleSaleRecord.as_view("single_sales_view")
 
 
-views_blueprint.add_url_rule("/api/v2/sales/<product_id>", view_func=make_sales_view, methods=["POST"])
+views_blueprint.add_url_rule("/api/v2/sales", view_func=make_sales_view, methods=["POST"])
 views_blueprint.add_url_rule("/api/v2/sales", view_func=all_sales_view, methods=["GET"])
 views_blueprint.add_url_rule("/api/v2/sales/<sale_id>", view_func=single_sales_view, methods=["GET"])
 

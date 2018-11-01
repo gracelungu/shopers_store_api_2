@@ -5,5 +5,12 @@ app/auth/*.pyc
 app/controllers/*.pyc
 app/db/*.pyc
 app/models/*.pyc
-.env
+.env/
 app/views/*.pyc
+__pycache__/
+app/__pycache__/
+app/controllers/__pycache__/
+app/db/__pycache__/
+app/models/__pycache__/
+app/views/__pycache__/
+tests/__pycache__/

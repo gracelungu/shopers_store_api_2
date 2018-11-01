@@ -56,7 +56,7 @@ GET | /api/v2/products | False | Fetch all available products
 GET | /api/v2/products/<product_id> | False | Fetch details of a single product
 DELETE | /api/v2/products/<product_id> | False | Delete a single product
 PUT | /api/v2/products/<product_id> | False | Edit details of a single product
-GET | /api/v2/sales/<sale_id>/answer | False | Fetch details of a single sale record
+GET | /api/v2/sales/<sale_id> | False | Fetch details of a single sale record
 GET | /api/v2/sales | False | Fetch all sale records created
 
 ## Authors

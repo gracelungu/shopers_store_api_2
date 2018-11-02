@@ -20,8 +20,10 @@ class DBConnection:
             'app/db/create_products.sql', mode='r', encoding='utf-8-sig').read()
         create_sales_table = open(
             'app/db/create_sales.sql', mode='r', encoding='utf-8-sig').read()
+        admin_query = (
+            """INSERT INTO users (username, contact, role, password) VALUES ('admin', '0000-000000', 'admin', 'admin')""")    
         queries = (create_users_table,
-                   create_products_table, create_sales_table)
+                   create_products_table, create_sales_table, admin_query)
 
         # try:
         for query in queries:

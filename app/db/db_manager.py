@@ -12,10 +12,9 @@ class DBConnection:
             if os.environ["APP_SETTINGS"] == "TESTING":
                 self.con = psycopg2.connect(
                     database="store_manager_testing", user="postgres", password="araali", host="localhost", port="5432")
-                print("I AM HERE")
             else:
                 self.con = psycopg2.connect(
-                    database=os.environ["DATABASE_NAME"], user=os.environ["DATABASE_USER"], password=os.environ["DATABASE_PASSWORD"], host=os.environ["DATABASE_HOST"], port=os.environ["DATABASE_PORT"])
+                    database="da1hece6v95gaj", user="elgxiipyvnypmn", password="94b9d2e856212f290d65e30618bf241ac6835315245b1c56f63874e012e8ebee", host="ec2-23-23-245-89.compute-1.amazonaws.com", port="5432")
             self.con.autocommit = True
             self.dict_cursor = self.con.cursor(
                 cursor_factory=extra.RealDictCursor)

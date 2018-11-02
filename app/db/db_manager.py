@@ -15,7 +15,7 @@ class DBConnection:
                 print("I AM HERE")
             else:
                 self.con = psycopg2.connect(
-                    database=os.environ["DATABASE_NAME"], user=os.environ["DATABASE_USER"], password=os.environ["DATABASE_PASSWORD"], host=os.environ["DATABASE_HOST"], port=os.environ["DATABASE_PORT"])
+                    database="d80u6f4o43aan7", user="srzjrqwazxzwta", password="4d7d7419d4f7b372cd3623e7196e0b32b60daca7a07e5094b4f8478fbe8c155b", host="ec2-107-21-233-72.compute-1.amazonaws.com", port="5432")
             self.con.autocommit = True
             self.dict_cursor = self.con.cursor(
                 cursor_factory=extra.RealDictCursor)
@@ -36,7 +36,7 @@ class DBConnection:
         for query in queries:
             self.dict_cursor.execute(query)
         # except Exception as ex:
-        #     pprint("Table creation error: "+str(ex))    
+        #     pprint("Table creation error: "+str(ex))
 
     def delete_tables(self):
         delete_queries = (

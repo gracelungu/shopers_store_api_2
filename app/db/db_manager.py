@@ -8,19 +8,10 @@ import os
 
 class DBConnection:
     def __init__(self):
-        try:
-            if os.environ["APP_SETTINGS"] == "TESTING":
-                self.con = psycopg2.connect(
-                    database="store_manager_testing", user="postgres", password="araali", host="localhost", port="5432")
-                print("I AM HERE")
-            else:
-                self.con = psycopg2.connect(
-                    database="d80u6f4o43aan7", user="srzjrqwazxzwta", password="4d7d7419d4f7b372cd3623e7196e0b32b60daca7a07e5094b4f8478fbe8c155b", host="ec2-107-21-233-72.compute-1.amazonaws.com", port="5432")
-            self.con.autocommit = True
-            self.dict_cursor = self.con.cursor(
-                cursor_factory=extra.RealDictCursor)
-        except Exception as ex:
-            pprint("Database connection error: "+str(ex))
+        self.con = psycopg2.connect(database="d80u6f4o43aan7", user="srzjrqwazxzwta",
+                                    password="4d7d7419d4f7b372cd3623e7196e0b32b60daca7a07e5094b4f8478fbe8c155b", host="ec2-107-21-233-72.compute-1.amazonaws.com", port="5432")
+        self.con.autocommit = True
+        self.dict_cursor = self.con.cursor(cursor_factory=extra.RealDictCursor)
 
     def create_tables(self):
         create_users_table = open(

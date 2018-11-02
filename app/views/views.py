@@ -159,6 +159,7 @@ class CreateSalesRecord(MethodView):
                 return jsonify({"message": "sale record successfully added", "sale": db_func.get_newest_sale()}), 201
             else:
                 return jsonify({"message": "sale record not added. Product not available or is at minimum quantity"}), 400
+        return jsonify({"message": "a 'key(s)' is missing in your request body"}), 400
 
 class FetchAllSales(MethodView):
     @jwt_required

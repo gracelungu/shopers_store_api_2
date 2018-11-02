@@ -11,7 +11,7 @@ class TestProducts(BaseTestCase):
                                  data=json.dumps(dict(product="Life Jackets", quantity="20",unit_price="200"),)   
                              ) 
         reply = json.loads(response.data.decode())
-        self.assertIn(("Life Jackets"), reply.get("New Product").values())
+        self.assertIn(("Life Jackets"), reply.get("Product").values())
         self.assertEqual(response.status_code, 201)
 
     def test_adding_product_existing_product(self):

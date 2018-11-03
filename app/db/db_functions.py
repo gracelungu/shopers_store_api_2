@@ -122,4 +122,18 @@ class DBFunctions:
         #function to get the most recent sale record made
         self.cursor.execute("SELECT * FROM sales WHERE sale_id = '{}' AND attendant = '{}'" .format(sale_id, user_name))
         sale_record = self.cursor.fetchall()
-        return sale_record 
+        return sale_record
+
+    def update_user(self, username, role):
+    #function to update product
+        try:
+            query = ("""UPDATE users SET role = '{}' where username = '{}'""" .format(
+                role, username))
+            self.cursor.execute(query)
+            count = self.cursor.rowcount
+            if int(count) > 0:
+                return True
+            else:
+                return False   
+        except:
+            return False    

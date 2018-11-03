@@ -18,7 +18,7 @@ class UserController:
         # check if the supplied username already exists.
         user_exists = self.dbcon.is_username_exist(user_name=user_name)
         if user_exists:
-            return True
+            return user_exists
         return False
 
     def check_if_contact_exists(self, contact):
@@ -38,4 +38,9 @@ class UserController:
     def get_user_role(self, user_name):
         # get current user's role
         user = self.dbcon.is_username_exist(user_name=user_name)
-        return user    
+        return user
+
+    def update_user_role(self, user_name, role):
+        # update current user's role
+        user_update= self.dbcon.update_user(username=user_name, role=role)
+        return user_update  

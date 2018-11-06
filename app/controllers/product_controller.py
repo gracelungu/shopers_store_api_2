@@ -31,6 +31,7 @@ class ProductController:
             return False
 
     def get_single_product(self, product_id):
+        # get single product
         product = self.dbcon.fetch_single_product(product_id=product_id)
         if product:
             return product
